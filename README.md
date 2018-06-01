@@ -18,7 +18,7 @@ devtest 2,000
 The data is provided in form of a file containing the Twitter status IDs. The actual posts can be downloaded 
 using these provided files in combination with a [download script](https://github.com/aritter/twitter_download "Tweet downloader").  
 
-Two years later, not all tweets are available for download anymore which results in the following numbers for the dataset:
+Two years later, not all tweets are available for download anymore which results in the following numbers for the dataset:  
 train 2,245  
 dev   696  
 devtest 1,081  
