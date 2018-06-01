@@ -1,7 +1,6 @@
 # this is where the features are extracted
 # -*- coding: utf-8 -*-
 
-import codecs
 import re
 from data_reader import OpinionLexiconReader,SubjectivityClueReader
 

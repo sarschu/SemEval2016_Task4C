@@ -9,7 +9,6 @@ import configparser
 from data_reader import CorpusReader,TensorReader, SimpleReader
 from feature_extractor import FeatureExtractor
 from classifiers import *
-import os
 import sys
 
 #THIS IS WHERE THE INPUT FILES ARE DEFINED#
@@ -41,7 +40,7 @@ except configparser.NoOptionError:
 #THIS IS WHERE THE FEATURES ARE EXTRACTED AND THE DATA IS PREPARED FOR TRAINING#
 
 if "nb" in classifiers or "baseline" in classifiers:
-    print "Reading test data..."
+    print("Reading test data...")
     x_test_nb =SimpleReader(test).prepare_corpus()
 
 #the annotated corpus is send to the FeatureExtractor
@@ -49,10 +48,10 @@ if "nb" in classifiers or "baseline" in classifiers:
 #in order to change which features are used, open feature_extractor.py and change the 
 #function calls
 if "svm" in classifiers:
-    print "Reading training data..."
+    print("Reading training data...")
     test_corpus = CorpusReader(test).prepare_corpus()
    
-    print "Extracting features..."
+    print("Extracting features...")
     x_test_svm = FeatureExtractor().extract_features(test_corpus,opinion_pos,opinion_neg,subjectivity_clues)
 
 #the annotated corpus is converted to tensors of pretrained tweet embeddings in order to 
@@ -61,7 +60,7 @@ if "svm" in classifiers:
 #path_to_train_file,path_to_dev_file,embedding_file
 
 if "nn" in classifiers:
-    print "Reading training and development data..."
+    print("Reading training and development data...")
     x_test_nn,y_test_nn,x_dev,y_dev,embedding_layer,max_seq_length,word_index = TensorReader(test,test,pretrained_embeddings).prepare_corpus()
 
 
@@ -69,26 +68,26 @@ if "nn" in classifiers:
 
 if "nb" in classifiers:
     nbT= nb.NBTrainer()
-    print "Testing..."
+    print("Testing...")
     fscore=nbT.test(model_id_nb,x_test_nb)
-    print "The model achieves an fscore of "+str(fscore)+" on the development data"
+    print("The model achieves an fscore of "+str(fscore)+" on the development data")
     
-elif "nn" in classifiers:
+if "nn" in classifiers:
     nnT=nn.NNTrainer()
-    print "Testing..."
+    print("Testing...")
     fscore=nnT.test(model_id_nn,x_test_nn,y_test_nn)
-    print "The model achieves an fscore of "+str(fscore)+" on the development data"
+    print("The model achieves an fscore of "+str(fscore)+" on the development data")
     
-elif "svm" in classifiers:
+if "svm" in classifiers:
     svmT = svm.SVMTrainer()
-    print "Testing..."
+    print("Testing...")
     fscore=svmT.test(model_id_svm,x_test_svm)
-    print "The model achieves an fscore of "+str(fscore)+" on the development data"
+    print("The model achieves an fscore of "+str(fscore)+" on the development data")
 
-elif "baseline" in classifiers:
+if "baseline" in classifiers:
     blT=baseline.Baseline()
-    print "Testing..."
+    print("Testing...")
     fscore=blT.test(x_test_nb)
-    print "The baseline achieves an fscore of "+str(fscore)+" on the development data"
+    print("The baseline achieves an fscore of "+str(fscore)+" on the development data")
 
 

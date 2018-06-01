@@ -52,11 +52,11 @@ It turns out that the data is heavily skewed towards the positive class (similar
 ## System requirements
 python2.7  
 nltk  
-nltk.corpus.stopwr  
+nltk.corpus.stopwords  
 nltk.tokenize  
 numpy  
 nltk.stem.wordnet   
- nltk.stem.snowball  
+nltk.stem.snowball  
 keras  
 theano  
 configparser  
@@ -80,9 +80,9 @@ Before training the tweets are preprocessed in the following way:
 
 For the training of the Naive Bayes classifier and the Support Vector Machines different feature sets are used.  
 
-The **Naive Bayes** classifier  (nltk) relies on the presence and/or absence of lexical items (lemmas). The conditional probabilities of words with respect to a polarity label are learned from the training data.  
+The **Naive Bayes** classifier (nltk) relies on the presence and/or absence of lexical items (lemmas). The conditional probabilities of words with respect to a polarity label are learned from the training data.  
 
-For the training of the **Support Vector Machine** classifier (nltk wrapper for sklearn), in addition to the lexical features, linguistically more complex features as well as features extracted from sentiment and subjectivity clue lexicons are extracted. The following features have been implemented:  
+For the training of the **Support Vector Machine** classifier (nltk wrapper for sklearn), in addition to the lexical features, linguistically more complex features as well as features extracted from sentiment and subjectivity clue lexicons are extracted. The implemented features are described in ``feature_extractor.py``
 
 I used external lexicons to enrich the features extracted for each tweet
 
@@ -98,8 +98,8 @@ As evaluation metrics we use F1 Score (following the Shared Task)
 
 | Classifier             | Development | Test |  
 |------------------------|-------------|------|  
-| Baseline               |             |      |  
-| Naive Bayes            |             |      |  
-| Support Vector Machine | 0.509       |      |  
-| Recurrent Neural Net   |             |      |  
+| Baseline               | 0.509       | 0.517|  
+| Naive Bayes            | 0.53        | 0.515|  
+| Support Vector Machine | 0.509       | 0.517|  
+| Recurrent Neural Net   | 0.526       | 0.535|  
 

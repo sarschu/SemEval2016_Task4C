@@ -7,7 +7,6 @@ import configparser
 from data_reader import CorpusReader,TensorReader, SimpleReader
 from feature_extractor import FeatureExtractor
 from classifiers import *
-import os
 import sys
 
 
@@ -32,14 +31,12 @@ except configparser.NoOptionError:
     raise
 
 
-
-
 #THIS IS WHERE THE FEATURES ARE EXTRACTED AND THE DATA IS PREPARED FOR TRAINING#
 
 if classifier =="nb" or classifier =="baseline":
-    print "Reading training data..."
+    print("Reading training data...")
     x_train = SimpleReader(train).prepare_corpus()
-    print "Reading development data..."
+    print("Reading development data...")
     x_dev =SimpleReader(dev).prepare_corpus()
 
 #the annotated corpus is send to the FeatureExtractor
@@ -47,11 +44,11 @@ if classifier =="nb" or classifier =="baseline":
 #in order to change which features are used, open feature_extractor.py and change the 
 #function calls
 if classifier =="svm":
-    print "Reading training data..."
+    print("Reading training data...")
     train_corpus = CorpusReader(train).prepare_corpus()
-    print "Reading development data..."
+    print("Reading development data...")
     dev_corpus = CorpusReader(dev).prepare_corpus()
-    print "Extracting features..."
+    print("Extracting features...")
     x_train = FeatureExtractor().extract_features(train_corpus,opinion_pos,opinion_neg,subjectivity_clues)
     x_dev =FeatureExtractor().extract_features(dev_corpus,opinion_pos,opinion_neg,subjectivity_clues)
 
@@ -61,7 +58,7 @@ if classifier =="svm":
 #path_to_train_file,path_to_dev_file,embedding_file
 
 if classifier =="nn":
-    print "Reading training and development data..."
+    print("Reading training and development data...")
     x_train,y_train,x_dev,y_dev,embedding_layer,max_seq_length,word_index = TensorReader(train,dev,pretrained_embeddings).prepare_corpus()
 
 
@@ -69,32 +66,32 @@ if classifier =="nn":
 
 if classifier =="nb":
     nbT= nb.NBTrainer()
-    print "Training..."
+    print("Training...")
     model_id = nbT.train(x_train)
-    print "Testing..."
+    print("Testing...")
     fscore=nbT.test(model_id,x_dev)
-    print "The model achieves an fscore of "+str(fscore)+" on the development data"
+    print("The model achieves an fscore of "+str(fscore)+" on the development data")
     
 elif classifier =="nn":
     nnT=nn.NNTrainer()
-    print "Training..."
+    print("Training...")
     model_id = nnT.train(x_train,y_train,x_dev,y_dev,embedding_layer,max_seq_length,word_index)
-    print "Testing..."
+    print("Testing...")
     fscore=nnT.test(model_id,x_dev,y_dev)
-    print "The model achieves an fscore of "+str(fscore)+" on the development data"
+    print("The model achieves an fscore of "+str(fscore)+" on the development data")
     
 elif classifier =="svm":
     svmT = svm.SVMTrainer()
-    print "Training..."
+    print("Training...")
     model_id = svmT.train(x_train)
-    print "Testing..."
+    print("Testing...")
     fscore=svmT.test(model_id,x_dev)
-    print "The model achieves an fscore of "+str(fscore)+" on the development data"
+    print("The model achieves an fscore of "+str(fscore)+" on the development data")
 
 elif classifier =="baseline":
     blT=baseline.Baseline()
-    print "Testing..."
+    print("Testing...")
     fscore=blT.test(x_dev)
-    print "The baseline achieves an fscore of "+str(fscore)+" on the development data"
+    print("The baseline achieves an fscore of "+str(fscore)+" on the development data")
 
 

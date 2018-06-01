@@ -4,7 +4,6 @@
 from nltk.tokenize import TweetTokenizer
 import codecs
 import csv
-import re
 import nltk
 import numpy as np
 from nltk.stem.wordnet import WordNetLemmatizer
@@ -17,8 +16,6 @@ from keras.layers import Embedding
 from keras.utils import *
 
 
-"""This DataReader reads the file format provided by the semeval shared task 
-    and returns a python dictionary containing relevant information for the feature extractor"""
 class CorpusReader:
     
     # this is the constructor of the CorpusReader class. It makes the
@@ -79,7 +76,7 @@ class TensorReader:
 
         # dictionary mapping label name to numeric id
         labels_index = {"-2":-2,"-1":-1,"0":0,"1":1,"2":2}  
-        MAX_NB_WORDS=0
+        MAX_NB_WORDS=4086
         #read train data
         texts_train = []  # list of text samples
         tweet_tokenizer = TweetTokenizer()
@@ -101,9 +98,7 @@ class TensorReader:
 
             
             
-            #find longest tweet
-            if len(text)> MAX_NB_WORDS:
-                MAX_NB_WORDS = len(text)
+            
             #translator function does not work with utf8
             texts_train.append(" ".join(text).encode('ascii'))
             labels_train.append(row[2])
@@ -127,13 +122,10 @@ class TensorReader:
             stemmer = SnowballStemmer('english')
             stemmed_words = [stemmer.stem(word) for word in text]
             text = " ".join(stemmed_words)
-            #find longest tweet
-            if len(text)> MAX_NB_WORDS:
-                MAX_NB_WORDS = len(text)
             texts_dev.append(" ".join(text).encode('ascii'))
             labels_dev.append(row[2])
 
-        print ('Found %s dev texts.' % len(texts_dev))
+        print('Found %s dev texts.' % len(texts_dev))
         
 
         #transform texts into tensors
@@ -144,7 +136,6 @@ class TensorReader:
 
         word_index = tokenizer.word_index
         print('Found %s unique tokens.' % len(word_index))
-
         x_train = pad_sequences(sequences_train, maxlen=MAX_NB_WORDS)
         x_val =   pad_sequences(sequences_dev, maxlen=MAX_NB_WORDS)
         
@@ -156,21 +147,7 @@ class TensorReader:
         #use pretrained embeddings
 
         embeddings_index = self._load_embedding_vectors_glove()
-#        vocabulary_size=400000
-#        embedding_matrix = np.zeros((vocabulary_size, 100))
-#        for word, index in tokenizer.word_index.items():
-#                if index > vocabulary_size - 1:
-#                    break
-#                else:
-#                    embedding_vector = embeddings_index.get(word)
-#                    if embedding_vector is not None:
-#                        embedding_matrix[index] = embedding_vector
-#        for line in self.embeddings:
-#            values = line.split()
-#            word = values[0]
-#            coefs = np.asarray(values[1:], dtype='float32')
-#            embeddings_index[word] = coefs
-       
+
 
         print('Found %s word vectors.' % len(embeddings_index))
 

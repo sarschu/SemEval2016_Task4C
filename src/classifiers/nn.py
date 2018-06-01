@@ -3,16 +3,13 @@
 # The code has been adapted from https://medium.com/@sabber/classifying-yelp-review-comments-using-cnn-lstm-and-pre-trained-glove-word-embeddings-part-3-53fcea9a17fa
 
 import numpy as np
-import codecs
-import csv
+from keras.models import model_from_json
 import time
 import datetime
 from keras.models import Sequential
 from keras import metrics
 from keras.layers import LSTM, Embedding,Input,Dropout, Conv1D, MaxPooling1D,Dense
 from keras import optimizers
-from keras.callbacks import Callback
-from sklearn.metrics import f1_score
 import keras.backend as K
 
 ###################################################
